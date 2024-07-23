@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { ThemeProvider, useTheme } from './context/useTheme'; // Import ThemeProvider
+import { ThemeProvider, useTheme } from './ui/theme'; // Import ThemeProvider
 import AuthScreen from './screens/AuthScreen';
 import HomeScreen from './screens/HomeScreen';
 import TermsScreen from './screens/TermsScreen';

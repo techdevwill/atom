@@ -5,7 +5,7 @@ import React, { createContext, useContext, useState } from 'react';
 const ThemeContext = createContext();
 
 // Define a dark theme
-const darkTheme = {
+const dark = {
   background: '#333',
   text: '#fff',
   accent: 'white',
@@ -14,7 +14,7 @@ const darkTheme = {
 };
 
 // Define a light theme (optional, for future use)
-const lightTheme = {
+const light = {
   background: '#fff',
   text: '#000',
   tabBarActiveTintColor: 'tomato',
@@ -23,11 +23,11 @@ const lightTheme = {
 
 // Theme provider component
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(darkTheme);
+  const [theme, setTheme] = useState(light);
 
   // Toggle theme if needed
   const toggleTheme = () => {
-    setTheme(theme === darkTheme ? lightTheme : darkTheme);
+    setTheme(theme === dark ? light : dark);
   };
 
   return (

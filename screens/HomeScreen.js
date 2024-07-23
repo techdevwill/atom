@@ -3,7 +3,7 @@
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '../context/useTheme'; // Import useTheme
+import { useTheme } from '../ui/theme'; // Import useTheme
 import { useAppContext } from '../context/AppContext';
 import { useEffect} from 'react'
 // Import new screens
