@@ -1,8 +1,10 @@
 // screens/AuthScreen.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { login } from '../lib/firebase';
+import { useAppContext } from '../context/AppContext';
 
 const AuthScreen = () => {
   const [email, setEmail] = useState('');
@@ -12,21 +14,26 @@ const AuthScreen = () => {
   const [isSignUp, setIsSignUp] = useState(false); // Toggle between Sign Up and Login
   const [showResetPassword, setShowResetPassword] = useState(false); // Show reset password form
   const [resetEmail, setResetEmail] = useState('');
+  const [systemMessage, setSystemMessage ] = useState('')
   const navigation = useNavigation();
+  const {uid} = useAppContext()
 
-  const handleLogin = () => {
-    console.log(`Login - Email: ${email}, Password: ${password}`);
-    if (email && password) {
-      navigation.replace('Home');
-    } else {
-      Alert.alert('Error', 'Please enter both email and password.');
-    }
+  useEffect(()=>{
+    if(uid) navigation.replace('Home')
+  },[uid])
+
+
+  const handleLogin = async () => {
+    if (!email && !password) return Alert.alert('Error', 'Please enter both email and password.')
+    const response = await login(email, password)
+    if(response.error) return setSystemMessage(response.error)
+    if(response.uid) return navigation.replace('Home');  
   };
 
   const handleSignUp = () => {
     console.log(`Sign Up - Email: ${email}, Password: ${password}, Confirm Password: ${confirmPassword}`);
     if (email && password && confirmPassword && password === confirmPassword && termsAccepted) {
-      navigation.replace('Home');
+      // navigation.replace('Home');
     } else {
       Alert.alert('Error', 'Please fill in all fields correctly and accept the terms.');
     }
@@ -52,7 +59,7 @@ const AuthScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{isSignUp ? 'Sign Up' : 'Login'}</Text>
-
+    {systemMessage && <div>{systemMessage}</div>}
       {showResetPassword ? (
         <View style={styles.resetPasswordContainer}>
           <TextInput

@@ -1,20 +1,30 @@
 // screens/HomeScreen.js
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../context/useTheme'; // Import useTheme
-
+import { useAppContext } from '../context/AppContext';
+import { useEffect} from 'react'
 // Import new screens
 import ChatScreen from './ChatScreen';
 import SettingsScreen from './SettingsScreen';
 import ProfileScreen from './ProfileScreen';
+import { useNavigation } from '@react-navigation/native';
+
 
 // Define the tab navigator
 const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
   const { theme } = useTheme(); // Access theme from context
+  const { uid } = useAppContext()
+  const navigation = useNavigation();
+
+  useEffect(()=>{
+    if(!uid) navigation.replace('Auth')
+  },[uid])
+
   
   return (
     <Tab.Navigator

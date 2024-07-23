@@ -9,6 +9,7 @@ import { ThemeProvider, useTheme } from './context/useTheme'; // Import ThemePro
 import AuthScreen from './screens/AuthScreen';
 import HomeScreen from './screens/HomeScreen';
 import TermsScreen from './screens/TermsScreen';
+import { AppProvider } from './context/AppContext';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ const HeaderLeft = () => {
 };
 
 const App = () => (
+<AppProvider>
   <ThemeProvider>
     <NavigationContainer>
       <Stack.Navigator
@@ -40,8 +42,8 @@ const App = () => (
             ),
             headerRight: () => (
               <TouchableOpacity
-                onPress={() => navigation.navigate('SomeRightAction')} // Replace with your action
-                style={{ marginRight: 15 }}
+              onPress={() => navigation.navigate('SomeRightAction')} // Replace with your action
+              style={{ marginRight: 15 }}
               >
                 <Ionicons name="settings-outline" size={24} color={theme.text} />
               </TouchableOpacity>
@@ -50,13 +52,14 @@ const App = () => (
             headerTintColor: theme.text, // Apply theme text color
           };
         }}
-      >
+        >
         <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: true }} />
         <Stack.Screen name="Terms" component={TermsScreen} options={{ headerShown: true }} />
       </Stack.Navigator>
     </NavigationContainer>
   </ThemeProvider>
+</AppProvider>
 );
 
 const styles = StyleSheet.create({
