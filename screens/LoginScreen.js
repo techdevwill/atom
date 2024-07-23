@@ -1,24 +1,32 @@
 // screens/LoginScreen.js
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // Function to handle login
   const handleLogin = () => {
-    // Perform authentication here and navigate to the home screen
-    navigation.replace('Home');
+    console.log('Email:', email);
+    console.log('Password:', password);
+    
+    // Perform authentication here
+    // navigation.replace('Home');
   };
+
+  // Check if the login button should be enabled
+  const isLoginDisabled = !email || !password;
 
   return (
     <View style={styles.container}>
-      <Text>Login</Text>
+      <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
+        keyboardType="email-address"
       />
       <TextInput
         style={styles.input}
@@ -27,7 +35,13 @@ const LoginScreen = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLogin} />
+      <TouchableOpacity 
+        style={[styles.button, isLoginDisabled && styles.buttonDisabled]} 
+        onPress={handleLogin} 
+        disabled={isLoginDisabled}
+      >
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -37,6 +51,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+    fontWeight: 'bold',
   },
   input: {
     width: '80%',
@@ -45,6 +65,21 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
+    backgroundColor: '#fff',
+  },
+  button: {
+    width: '80%',
+    padding: 10,
+    backgroundColor: 'tomato',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonDisabled: {
+    backgroundColor: '#ccc',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
 

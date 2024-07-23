@@ -5,48 +5,58 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import LoginScreen from './screens/LoginScreen';
+import { ThemeProvider, useTheme } from './context/useTheme'; // Import ThemeProvider
+import AuthScreen from './screens/AuthScreen';
 import HomeScreen from './screens/HomeScreen';
-
-// Define a token parameter
-const tokenAmount = 1000;
+import TermsScreen from './screens/TermsScreen';
 
 const Stack = createStackNavigator();
 
 // Custom header component
-const HeaderLeft = () => (
-  <View style={styles.headerLeft}>
-    <Ionicons name="cash-outline" size={18} color="black" />
-    <Text style={styles.tokenText}>{tokenAmount}</Text>
-  </View>
-);
+const HeaderLeft = () => {
+  const { theme } = useTheme(); // Access theme from context
+  return (
+    <View style={[styles.headerLeft, { color: theme.text }]}>
+      <Ionicons name="cash-outline" size={24} color={theme.text} />
+      <Text style={[styles.tokenText, { color: theme.text }]}>1000</Text>
+    </View>
+  );
+};
 
 const App = () => (
-  <NavigationContainer>
-    <Stack.Navigator
-      initialRouteName="Login"
-      screenOptions={({ navigation }) => ({
-        headerTitle: () => (
-          <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Home</Text>
-        ),
-        headerTitleAlign: 'center', // Center the title
-        headerLeft: () => (
-          <HeaderLeft />
-        ),
-        headerRight: () => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SomeRightAction')} // Replace with your action
-            style={{ marginRight: 15 }}
-          >
-            <Ionicons name="settings-outline" size={24} color="black" />
-          </TouchableOpacity>
-        ),
-      })}
-    >
-      <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: true }} />
-    </Stack.Navigator>
-  </NavigationContainer>
+  <ThemeProvider>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Auth"
+        screenOptions={({ navigation }) => {
+          const { theme } = useTheme(); // Access theme from context
+          return {
+            headerTitle: () => (
+              <Text style={[{ fontSize: 20, fontWeight: 'bold' }, { color: theme.text }]}>Home</Text>
+            ),
+            headerTitleAlign: 'center', // Center the title
+            headerLeft: () => (
+              <HeaderLeft />
+            ),
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('SomeRightAction')} // Replace with your action
+                style={{ marginRight: 15 }}
+              >
+                <Ionicons name="settings-outline" size={24} color={theme.text} />
+              </TouchableOpacity>
+            ),
+            headerStyle: { backgroundColor: theme.background }, // Apply theme background
+            headerTintColor: theme.text, // Apply theme text color
+          };
+        }}
+      >
+        <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: true }} />
+        <Stack.Screen name="Terms" component={TermsScreen} options={{ headerShown: true }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  </ThemeProvider>
 );
 
 const styles = StyleSheet.create({
